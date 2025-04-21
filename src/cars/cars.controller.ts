@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Put,
@@ -21,7 +22,7 @@ export class CarsController {
   }
 
   @Get(':id')
-  getCarById(@Param('id') id: string) {
+  getCarById(@Param('id', ParseUUIDPipe) id: string) {
     return this.carsService.findOne(id);
   }
 
@@ -32,7 +33,7 @@ export class CarsController {
 
   @Put(':id')
   updateCar(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() car: { brand: string; model: string },
   ) {
     return this.carsService.update(id, car);
@@ -40,14 +41,14 @@ export class CarsController {
 
   @Patch(':id')
   partialUpdateCar(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() car: Partial<{ brand: string; model: string }>,
   ) {
     return this.carsService.partialUpdate(id, car);
   }
 
   @Delete(':id')
-  deleteCar(@Param('id', ParseIntPipe) id: string) {
+  deleteCar(@Param('id', ParseUUIDPipe) id: string) {
     return this.carsService.delete(id);
   }
 }
