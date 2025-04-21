@@ -1,20 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Car } from './interfaces/car.interface';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class CarsService {
-  private cars = [
+  private cars: Car[] = [
     {
-      id: 1,
+      id: uuid(),
       brand: 'Toyota',
       model: 'Corolla',
     },
     {
-      id: 2,
+      id: uuid(),
       brand: 'Honda',
       model: 'Civic',
     },
     {
-      id: 3,
+      id: uuid(),
       brand: 'Nissan',
       model: 'Altima',
     },
@@ -24,7 +26,7 @@ export class CarsService {
     return this.cars;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     const car = this.cars.find((car) => car.id === id);
 
     if (!car) throw new NotFoundException(`Car with ID ${id} not found`);
@@ -33,12 +35,12 @@ export class CarsService {
   }
 
   create(car: { brand: string; model: string }) {
-    const newCar = { id: Date.now(), ...car };
+    const newCar = { id: uuid(), ...car };
     this.cars.push(newCar);
     return newCar;
   }
 
-  update(id: number, car: { brand: string; model: string }) {
+  update(id: string, car: { brand: string; model: string }) {
     const index = this.cars.findIndex((car) => car.id === id);
     if (index === -1)
       throw new NotFoundException(`Car with ID ${id} not found`);
@@ -47,7 +49,7 @@ export class CarsService {
     return this.cars[index];
   }
 
-  partialUpdate(id: number, car: Partial<{ brand: string; model: string }>) {
+  partialUpdate(id: string, car: Partial<{ brand: string; model: string }>) {
     const index = this.cars.findIndex((car) => car.id === id);
     if (index === -1)
       throw new NotFoundException(`Car with ID ${id} not found`);
@@ -56,7 +58,7 @@ export class CarsService {
     return this.cars[index];
   }
 
-  delete(id: number) {
+  delete(id: string) {
     const index = this.cars.findIndex((car) => car.id === id);
     if (index === -1)
       throw new NotFoundException(`Car with ID ${id} not found`);
