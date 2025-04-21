@@ -31,4 +31,38 @@ export class CarsService {
 
     return car;
   }
+
+  create(car: { brand: string; model: string }) {
+    const newCar = { id: Date.now(), ...car };
+    this.cars.push(newCar);
+    return newCar;
+  }
+
+  update(id: number, car: { brand: string; model: string }) {
+    const index = this.cars.findIndex((car) => car.id === id);
+    if (index === -1)
+      throw new NotFoundException(`Car with ID ${id} not found`);
+
+    this.cars[index] = { ...this.cars[index], ...car };
+    return this.cars[index];
+  }
+
+  partialUpdate(id: number, car: Partial<{ brand: string; model: string }>) {
+    const index = this.cars.findIndex((car) => car.id === id);
+    if (index === -1)
+      throw new NotFoundException(`Car with ID ${id} not found`);
+
+    this.cars[index] = { ...this.cars[index], ...car };
+    return this.cars[index];
+  }
+
+  delete(id: number) {
+    const index = this.cars.findIndex((car) => car.id === id);
+    if (index === -1)
+      throw new NotFoundException(`Car with ID ${id} not found`);
+
+    const deletedCar = this.cars[index];
+    this.cars.splice(index, 1);
+    return deletedCar;
+  }
 }
