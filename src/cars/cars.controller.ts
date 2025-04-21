@@ -14,6 +14,8 @@ import {
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
+import { PartialUpdateCarDto } from './dto/partialUpdate-car.dto';
+import { UpdateCarDto } from './dto/update-car.dto';
 
 @Controller('cars')
 export class CarsController {
@@ -34,20 +36,20 @@ export class CarsController {
     return this.carsService.create(car);
   }
 
-  @Put(':id')
-  updateCar(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() car: { brand: string; model: string },
-  ) {
-    return this.carsService.update(id, car);
-  }
-
   @Patch(':id')
   partialUpdateCar(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() car: Partial<{ brand: string; model: string }>,
+    @Body() car: PartialUpdateCarDto,
   ) {
     return this.carsService.partialUpdate(id, car);
+  }
+
+  @Put(':id')
+  updateCar(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() car: UpdateCarDto,
+  ) {
+    return this.carsService.update(id, car);
   }
 
   @Delete(':id')
